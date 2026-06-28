@@ -10,13 +10,7 @@ function Products() {
       image:
         "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=500",
     },
-    {
-      id: 2,
-      name: "MacBook Pro",
-      price: 149999,
-      image:
-        "https://images.unsplash.com/photo-1517336714739-489689fd1ca8?w=500",
-    },
+    
     {
       id: 3,
       name: "Sony Headphones",

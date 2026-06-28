@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 function AdminDashboard() {
-  const [products, setProducts] = useState([
+  const defaultProducts = [
     {
       id: 1,
       name: "Apple iPhone 16",
@@ -10,17 +10,13 @@ function AdminDashboard() {
     },
     {
       id: 2,
-      name: "MacBook Pro",
-      price: 149999,
-      category: "Laptop",
-    },
-    {
-      id: 3,
       name: "Sony Headphones",
       price: 14999,
       category: "Accessories",
     },
-  ]);
+  ];
+
+  const [products, setProducts] = useState(defaultProducts);
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -29,20 +25,17 @@ function AdminDashboard() {
   const [editId, setEditId] = useState(null);
   const [search, setSearch] = useState("");
 
-  // LOAD FROM LOCALSTORAGE
+  // Reset products once
   useEffect(() => {
-    const savedProducts = localStorage.getItem("products");
-    if (savedProducts) {
-      setProducts(JSON.parse(savedProducts));
-    }
+    localStorage.removeItem("products");
+    setProducts(defaultProducts);
   }, []);
 
-  // SAVE TO LOCALSTORAGE
+  // Save products
   useEffect(() => {
     localStorage.setItem("products", JSON.stringify(products));
   }, [products]);
 
-  // ADD + EDIT PRODUCT
   const addProduct = () => {
     if (!name || !price || !category) {
       alert("Please fill all fields");
@@ -52,7 +45,12 @@ function AdminDashboard() {
     if (editId) {
       const updatedProducts = products.map((product) =>
         product.id === editId
-          ? { ...product, name, price, category }
+          ? {
+              ...product,
+              name,
+              price: Number(price),
+              category,
+            }
           : product
       );
 
@@ -62,7 +60,7 @@ function AdminDashboard() {
       const newProduct = {
         id: Date.now(),
         name,
-        price,
+        price: Number(price),
         category,
       };
 
@@ -74,7 +72,6 @@ function AdminDashboard() {
     setCategory("");
   };
 
-  // DELETE PRODUCT
   const deleteProduct = (id) => {
     setProducts(products.filter((product) => product.id !== id));
   };
@@ -87,11 +84,16 @@ function AdminDashboard() {
         minHeight: "100vh",
       }}
     >
-      <h1 style={{ textAlign: "center", color: "#1e3a8a" }}>
+      <h1
+        style={{
+          textAlign: "center",
+          color: "#1e3a8a",
+          marginBottom: "30px",
+        }}
+      >
         👨‍💼 Admin Dashboard
       </h1>
 
-      {/* FORM */}
       <div
         style={{
           background: "white",
@@ -112,8 +114,6 @@ function AdminDashboard() {
             width: "100%",
             padding: "12px",
             marginBottom: "15px",
-            borderRadius: "6px",
-            border: "1px solid #ccc",
           }}
         />
 
@@ -126,8 +126,6 @@ function AdminDashboard() {
             width: "100%",
             padding: "12px",
             marginBottom: "15px",
-            borderRadius: "6px",
-            border: "1px solid #ccc",
           }}
         />
 
@@ -140,8 +138,6 @@ function AdminDashboard() {
             width: "100%",
             padding: "12px",
             marginBottom: "15px",
-            borderRadius: "6px",
-            border: "1px solid #ccc",
           }}
         />
 
@@ -160,22 +156,18 @@ function AdminDashboard() {
         </button>
       </div>
 
-      {/* SEARCH */}
       <input
         type="text"
-        placeholder="Search product..."
+        placeholder="Search Product..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         style={{
           width: "100%",
           padding: "12px",
           marginBottom: "20px",
-          borderRadius: "6px",
-          border: "1px solid #ccc",
         }}
       />
 
-      {/* TABLE */}
       <div
         style={{
           background: "white",
@@ -186,9 +178,19 @@ function AdminDashboard() {
       >
         <h2>Product List</h2>
 
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <table
+          style={{
+            width: "100%",
+            borderCollapse: "collapse",
+          }}
+        >
           <thead>
-            <tr style={{ background: "#1e3a8a", color: "white" }}>
+            <tr
+              style={{
+                background: "#1e3a8a",
+                color: "white",
+              }}
+            >
               <th style={{ padding: "12px" }}>ID</th>
               <th style={{ padding: "12px" }}>Product</th>
               <th style={{ padding: "12px" }}>Category</th>
@@ -207,12 +209,15 @@ function AdminDashboard() {
                   <td style={{ padding: "12px", textAlign: "center" }}>
                     {product.id}
                   </td>
+
                   <td style={{ padding: "12px", textAlign: "center" }}>
                     {product.name}
                   </td>
+
                   <td style={{ padding: "12px", textAlign: "center" }}>
                     {product.category}
                   </td>
+
                   <td style={{ padding: "12px", textAlign: "center" }}>
                     ₹{product.price}
                   </td>
