@@ -18,12 +18,7 @@ function Home() {
       image:
         "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
     },
-    {
-      name: "MacBook Pro",
-      price: "₹1,49,999",
-      image:
-        "https://images.unsplash.com/photo-1517336714739-489689fd1ca8?w=400",
-    },
+    
     {
       name: "Sony Headphones",
       price: "₹14,999",
